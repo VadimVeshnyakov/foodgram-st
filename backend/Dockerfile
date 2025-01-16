@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-COPY management/commands/ingredients.json management/commands/
-
 RUN pip install -r requirements.txt --no-cache-dir
 
 
