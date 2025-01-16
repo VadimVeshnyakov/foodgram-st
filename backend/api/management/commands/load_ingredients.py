@@ -1,4 +1,5 @@
 import json
+import csv
 from django.core.management.base import BaseCommand
 from api.models import Ingredient
 
@@ -9,7 +10,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         with open('ingredients.json', encoding='utf-8') as file:
             data = json.load(file)
-
+            # data = csv.DictReader(file)
+            self.stdout.write(data)
         for item in data:
             Ingredient.objects.get_or_create(
                 name=item['name'],
