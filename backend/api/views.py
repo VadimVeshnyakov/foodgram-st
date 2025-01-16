@@ -1,11 +1,10 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.permissions import (IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
-from rest_framework.pagination import LimitOffsetPagination
+from .pagination import PageToOffsetPagination
 from django.http import HttpResponse
-from django.urls import reverse
 from django.db.models import F, Sum
 from django.shortcuts import get_object_or_404, redirect
 from django_filters.rest_framework import DjangoFilterBackend
@@ -24,17 +23,20 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('name',)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
+    search_fields = ('^name',)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    pagination_class = LimitOffsetPagination
+    pagination_class = PageToOffsetPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
     permission_classes = (IsAuthorOrReadOnly,)
+
+    class Meta:
+        ordering = ['-id']
 
     def get_permissions(self):
         if self.action == 'create':
@@ -117,6 +119,4 @@ class RecipeViewSet(viewsets.ModelViewSet):
 class RecipeRedirectView(View):
     def get(self, request, short_id):
         recipe_id = int(short_id, 16)
-        recipe = get_object_or_404(Recipe, pk=recipe_id)
-        url = reverse('recipes-detail', kwargs={'pk': recipe.pk})
-        return redirect(url)
+        return redirect(f'/recipes/{recipe_id}')
