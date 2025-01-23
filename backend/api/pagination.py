@@ -1,16 +1,12 @@
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.exceptions import NotFound
 
 
 class PageToOffsetPagination(LimitOffsetPagination):
+    page_size = 6
+
     def get_offset(self, request):
-        page = request.query_params.get('page', None)
-        if page is not None:
-            try:
-                limit = int(request.query_params.get(
-                    'limit', 6))
-                offset = (int(page) - 1) * limit
-                return offset
-            except ValueError:
-                raise NotFound("Invalid page parameter")
+        page = request.query_params.get('page')
+        if page:
+            page = int(page) - 1
+            return page * self.page_size
         return super().get_offset(request)

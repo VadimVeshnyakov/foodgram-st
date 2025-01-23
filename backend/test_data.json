@@ -1,6 +1,6 @@
 [
     {
-        "model": "users.myuser",
+        "model": "recipe.user",
         "pk": 1,
         "fields": {
             "last_login": "2025-01-14T18:23:21.507Z",
@@ -19,7 +19,7 @@
         }
     },
     {
-        "model": "users.myuser",
+        "model": "recipe.user",
         "pk": 14,
         "fields": {
             "last_login": "2025-01-16T11:50:56.180Z",
@@ -38,7 +38,7 @@
         }
     },
     {
-        "model": "users.myuser",
+        "model": "recipe.user",
         "pk": 15,
         "fields": {
             "last_login": "2025-01-16T11:51:01.347Z",
@@ -57,7 +57,7 @@
         }
     },
     {
-        "model": "users.myuser",
+        "model": "recipe.user",
         "pk": 16,
         "fields": {
             "last_login": null,
@@ -76,7 +76,7 @@
         }
     },
     {
-        "model": "users.subscription",
+        "model": "recipe.subscription",
         "pk": 9,
         "fields": {
             "user": 14,
@@ -84,7 +84,7 @@
         }
     },
     {
-        "model": "users.subscription",
+        "model": "recipe.subscription",
         "pk": 10,
         "fields": {
             "user": 14,
@@ -92,7 +92,7 @@
         }
     },
     {
-        "model": "api.shoppingcart",
+        "model": "recipe.shoppingcart",
         "pk": 5,
         "fields": {
             "user": 14,
@@ -100,7 +100,7 @@
         }
     },
     {
-        "model": "api.recipe",
+        "model": "recipe.recipe",
         "pk": 1,
         "fields": {
             "name": "Торт",
@@ -111,7 +111,7 @@
         }
     },
     {
-        "model": "api.recipe",
+        "model": "recipe.recipe",
         "pk": 22,
         "fields": {
             "name": "Нечто съедобное (это не точно)",
@@ -122,7 +122,7 @@
         }
     },
     {
-        "model": "api.recipe",
+        "model": "recipe.recipe",
         "pk": 23,
         "fields": {
             "name": "Еще одна попытка приготовить еду",
@@ -133,7 +133,7 @@
         }
     },
     {
-        "model": "api.recipe",
+        "model": "recipe.recipe",
         "pk": 24,
         "fields": {
             "name": "Еда без дополнительной обработки",
@@ -144,7 +144,7 @@
         }
     },
     {
-        "model": "api.recipe",
+        "model": "recipe.recipe",
         "pk": 25,
         "fields": {
             "name": "Нечто жареное",
@@ -155,7 +155,7 @@
         }
     },
     {
-        "model": "api.recipe",
+        "model": "recipe.recipe",
         "pk": 26,
         "fields": {
             "name": "Варёное нечто",
@@ -166,7 +166,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 1,
         "fields": {
             "name": "абрикосовое варенье",
@@ -174,7 +174,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 2,
         "fields": {
             "name": "абрикосовое пюре",
@@ -182,7 +182,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 3,
         "fields": {
             "name": "абрикосовый джем",
@@ -190,7 +190,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 4,
         "fields": {
             "name": "абрикосовый сок",
@@ -198,7 +198,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 5,
         "fields": {
             "name": "абрикосы",
@@ -206,7 +206,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 6,
         "fields": {
             "name": "абрикосы консервированные",
@@ -214,7 +214,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 7,
         "fields": {
             "name": "авокадо",
@@ -222,7 +222,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 8,
         "fields": {
             "name": "агава сироп",
@@ -230,7 +230,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 9,
         "fields": {
             "name": "агар-агар",
@@ -238,7 +238,7 @@
         }
     },
     {
-        "model": "api.ingredient",
+        "model": "recipe.ingredient",
         "pk": 10,
         "fields": {
             "name": "аграм",
@@ -246,7 +246,7 @@
         }
     },
     {
-        "model": "api.recipeingredient",
+        "model": "recipe.recipeingredient",
         "pk": 33,
         "fields": {
             "recipe": 22,
@@ -255,7 +255,7 @@
         }
     },
     {
-        "model": "api.recipeingredient",
+        "model": "recipe.recipeingredient",
         "pk": 34,
         "fields": {
             "recipe": 22,
@@ -264,7 +264,7 @@
         }
     },
     {
-        "model": "api.recipeingredient",
+        "model": "recipe.recipeingredient",
         "pk": 35,
         "fields": {
             "recipe": 23,
@@ -273,7 +273,7 @@
         }
     },
     {
-        "model": "api.recipeingredient",
+        "model": "recipe.recipeingredient",
         "pk": 36,
         "fields": {
             "recipe": 23,
@@ -282,7 +282,7 @@
         }
     },
     {
-        "model": "api.recipeingredient",
+        "model": "recipe.recipeingredient",
         "pk": 37,
         "fields": {
             "recipe": 24,
@@ -291,7 +291,7 @@
         }
     },
     {
-        "model": "api.recipeingredient",
+        "model": "recipe.recipeingredient",
         "pk": 38,
         "fields": {
             "recipe": 25,
@@ -300,7 +300,7 @@
         }
     },
     {
-        "model": "api.recipeingredient",
+        "model": "recipe.recipeingredient",
         "pk": 39,
         "fields": {
             "recipe": 26,

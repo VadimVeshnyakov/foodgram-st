@@ -3,20 +3,31 @@
 ## Запуск проекта
 
 1. Клонируйте репозиторий
+```bash
+git clone git@github.com:VadimVeshnyakov/foodgram-st.git
+```
 
-2. Создайте файл `.env` в директории `infra` на основе `.env.example`:
+2. Перейдите в директорию `infra`
+```bash
+cd infra
+```
 
-3. В директории `infra` Запустите проект:
+3. Создайте файл `.env` в директории `infra` на основе `.env.example`:
+
+4. В директории `infra` Запустите проект:
 ```bash
 docker-compose up 
 ```
 
-4. Выполните миграции:
+5. Выполните миграции:
 ```bash
 docker-compose exec backend python manage.py migrate
 ```
 
-5. Если нужно, заполните базу тестовыми данными:
+6. Если нужно, заполните базу ингредиентами и тестовыми данными:
+```bash
+docker-compose exec backend python manage.py load_ingredients
+```
 ```bash
 docker-compose exec backend python manage.py loaddata test_data.json
 ```
