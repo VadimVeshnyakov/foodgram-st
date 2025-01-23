@@ -8,19 +8,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         with open('ingredients.json', encoding='utf-8') as file:
-            data = json.load(file)
-        existing_ingredients = set(
-            Ingredient.objects.values_list('name', flat=True)
-        )
-        new_ingredients = [
-            Ingredient(name=item['name'],
-                       measurement_unit=item['measurement_unit'])
-            for item in data if item['name'] not in existing_ingredients
-        ]
-        created_count = len(new_ingredients)
-        if new_ingredients:
-            Ingredient.objects.bulk_create(new_ingredients)
-
+            new_ingredients = [
+                Ingredient(**item)
+                for item in json.load(file)
+            ]
+        created_ingredients = Ingredient.objects.bulk_create(
+            new_ingredients, ignore_conflicts=True)
         self.stdout.write(self.style.SUCCESS(
-            f"Данные успешно загружены! Добавлено записей: {created_count}"
+            'Данные успешно загружены! '
+            f'Добавлено записей: {len(created_ingredients)}'
         ))

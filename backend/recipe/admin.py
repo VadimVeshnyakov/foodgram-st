@@ -1,13 +1,13 @@
 from django.contrib import admin
-from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import (Ingredient, Recipe, RecipeIngredient,
                      Favorite, ShoppingCart, User, Subscription)
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UsersAdmin(BaseUserAdmin):
     """Возможность редактировать и удалять все данные о пользователях.
     Поиск по адресу электронной почты и имени пользователя."""
 
@@ -17,34 +17,34 @@ class UserAdmin(admin.ModelAdmin):
         'email',
         'full_name',
         'display_avatar',
+        'recipe_count',
         'is_staff'
     )
     search_fields = ('username', 'email')
     list_filter = ('is_staff', 'is_active')
 
+    @admin.display(description='ФИО')
     def full_name(self, obj):
         return f'{obj.first_name} {obj.last_name}'.strip()
 
-    full_name.short_description = 'ФИО'
-
     @mark_safe
+    @admin.display(description='Аватар')
     def display_avatar(self, obj):
         if obj.avatar:
-            return format_html(
-                ('<img src="{}" style="height: '
-                 '50px;width: 50px; border-radius: 50%;">'),
-                obj.avatar.url
-            )
+            return (f'<img src="{obj.avatar.url}" style="height: '
+                    '50px;width: 50px; border-radius: 50%;">')
         return "—"
 
-    display_avatar.short_description = 'Аватар'
+    @admin.display(description='Число рецептов')
+    def recipe_count(self, obj):
+        return obj.recipes.count()
 
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     """Настройки отображения данных о подписках."""
 
-    list_display = ('user', 'following')
+    list_display = ('user', 'author')
 
 
 class RecipeIngredientInline(admin.TabularInline):
@@ -62,7 +62,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'id', 'name', 'cooking_time', 'author_username',
         'get_favorite_count', 'display_ingredients', 'display_image',
     )
-    list_filter = ('name',)
+    list_filter = ('name', 'author__username',)
     search_fields = ('name', 'author__username',)
 
     def author_username(self, recipe):
@@ -73,22 +73,22 @@ class RecipeAdmin(admin.ModelAdmin):
     get_favorite_count.short_description = 'В избранном'
 
     @mark_safe
+    @admin.display(description='Ингредиенты')
     def display_ingredients(self, recipe):
         ingredients = recipe.recipe_ingredients.select_related('ingredient')
         return '<br>'.join(
-            [(f'{ri.ingredient.name} — {ri.amount} '
+            (f'{ri.ingredient.name} — {ri.amount} '
                f'{ri.ingredient.measurement_unit}')
-             for ri in ingredients]
+            for ri in ingredients
         )
-    display_ingredients.short_description = 'Ингредиенты'
 
     @mark_safe
+    @admin.display(description='Изображение')
     def display_image(self, recipe):
         """Отображение изображения в виде миниатюры."""
         if recipe.image:
             return f'<img src="{recipe.image.url}" style="height: 100px;" />'
         return 'Нет изображения'
-    display_image.short_description = 'Изображение'
 
 
 @admin.register(Ingredient)

@@ -82,7 +82,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -153,12 +152,17 @@ REST_FRAMEWORK = {
 }
 
 DJOSER = {
-    'USER_ID_FIELD': 'id',
     'LOGIN_FIELD': 'email',
+    'USER_ID_FIELD': 'id',
     'SERIALIZERS': {
-        'user_create': 'api.serializers.UsersCreateSerializer',
         'user': 'api.serializers.UsersSerializer',
         'current_user': 'api.serializers.UsersSerializer',
+    },
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+        'user_detail': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+        'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+        'current_user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly']
     },
 }
 

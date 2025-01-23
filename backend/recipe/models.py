@@ -7,11 +7,11 @@ from django.core.exceptions import ValidationError
 
 def custom_username_validator(value):
     """Кастомная валидация имени пользователя."""
-    allowed_characters = r'^[a-zA-Z0-9_.-]+$'
+    allowed_characters = r'^[\w.@+-]+$'
     regex_validator = RegexValidator(
         regex=allowed_characters,
         message=('Имя пользователя может содержать только '
-                 'буквы, цифры, точки, дефисы и подчеркивания.')
+                 'буквы, цифры и символы: . @ + - _')
     )
     try:
         regex_validator(value)
@@ -27,38 +27,37 @@ class User(AbstractUser):
 
     username = models.CharField(
         'Имя пользователя',
-        max_length=120,
+        max_length=150,
         unique=True,
         validators=[custom_username_validator],
-        error_messages={
-            'unique': 'Пользователь с таким именем уже существует.',
-        },
     )
     email = models.EmailField(
         'email',
         max_length=254,
         blank=False,
         unique=True,
-        error_messages={
-            'unique': 'Пользователь с таким email уже зарегистрирован.',
-        },
     )
     first_name = models.CharField(
         'Имя',
-        max_length=120,
+        max_length=150,
         blank=False,
     )
     last_name = models.CharField(
         'Фамилия',
-        max_length=120,
+        max_length=150,
         blank=False,
-    )
-    password = models.CharField(
-        'Пароль',
-        max_length=120,
     )
     avatar = models.ImageField('Аватар', upload_to='users/images/',
                                null=True, blank=True)
+
+    USERNAME_FIELD = 'email'
+    USER_ID_FIELD = 'username'
+    REQUIRED_FIELDS = ('username', 'first_name', 'last_name')
+
+    class Meta:
+        verbose_name = 'пользователь'
+        verbose_name_plural = 'Пользователи'
+        ordering = ('username',)
 
 
 class Subscription(models.Model):
@@ -68,7 +67,7 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Подписчик'
     )
-    following = models.ForeignKey(
+    author = models.ForeignKey(
         User,
         related_name='authors',
         on_delete=models.CASCADE,
@@ -81,20 +80,21 @@ class Subscription(models.Model):
         ordering = ('-user',)
         constraints = (
             models.UniqueConstraint(
-                fields=('user', 'following'),
+                fields=('user', 'author'),
                 name='unique_follows',
             ),
         )
 
     def __str__(self):
-        return f'{self.user.username} подписан на {self.following.username}'
+        return f'{self.user.username} подписан на {self.author.username}'
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=256, verbose_name='Название',
+    name = models.CharField(max_length=128, verbose_name='Название',
                             help_text='Введите название ингредиента')
     measurement_unit = models.CharField(
-        max_length=256, verbose_name='Единица измерения',
+        max_length=64,
+        verbose_name='Единица измерения',
         help_text='Введите единицу измерения ингредиента'
     )
 
@@ -129,16 +129,14 @@ class Recipe(models.Model):
         'Время приготовления',
         help_text='Введите время приготовления в минутах',
         validators=[
-            MinValueValidator(
-                1, 'Время приготовление должно быть не менее минуты'
-            )
+            MinValueValidator(1)
         ]
     )
 
     class Meta:
         verbose_name = 'рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['-id']
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -157,9 +155,7 @@ class RecipeIngredient(models.Model):
         'Количество',
         help_text='Введите количество ингредиента',
         validators=[
-            MinValueValidator(
-                1, 'Колличество ингредиента в рецептне не должно быть менее 1.'
-            )
+            MinValueValidator(1)
         ]
     )
 

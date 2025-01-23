@@ -9,7 +9,10 @@ git clone git@github.com:VadimVeshnyakov/foodgram-st.git
 
 2. Перейдите в директорию `infra`
 ```bash
-cd infra
+cd foodgram-st/infra
+```
+```bash
+touch .env
 ```
 
 3. Создайте файл `.env` в директории `infra` на основе `.env.example`:
@@ -27,9 +30,6 @@ docker-compose exec backend python manage.py migrate
 6. Если нужно, заполните базу ингредиентами и тестовыми данными:
 ```bash
 docker-compose exec backend python manage.py load_ingredients
-```
-```bash
-docker-compose exec backend python manage.py loaddata test_data.json
 ```
 
 ## Адреса
